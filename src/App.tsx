@@ -8,8 +8,9 @@ import { HomePage } from './components/home/HomePage';
 import { PracticeSetup } from './components/setup/PracticeSetup';
 import { PracticePage } from './components/practice/PracticePage';
 import { ResultsPage } from './components/results/ResultsPage';
+import { SpellitPage } from './components/spellit/SpellitPage';
 
-type Screen = 'home' | 'setup' | 'practice' | 'results';
+type Screen = 'home' | 'setup' | 'practice' | 'results' | 'spellit';
 
 export const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
@@ -93,6 +94,12 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNavigateSpellit = () => {
+    playClick();
+    setCurrentScreen('spellit');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans selection:bg-indigo-500 selection:text-white">
       {/* Global Header */}
@@ -100,6 +107,7 @@ export const App: React.FC = () => {
         currentScreen={currentScreen}
         selectedGrade={selectedGrade}
         onNavigateHome={handleNavigateHome}
+        onNavigateSpellit={handleNavigateSpellit}
         soundEnabled={soundEnabled}
         onToggleSound={toggleSound}
         onToggleScratchpad={() => setIsScratchpadOpen((prev) => !prev)}
@@ -164,6 +172,8 @@ export const App: React.FC = () => {
             onNewPractice={handleNewPractice}
           />
         )}
+
+        {currentScreen === 'spellit' && <SpellitPage />}
       </main>
 
       {/* Global Footer */}

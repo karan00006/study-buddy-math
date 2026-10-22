@@ -1,12 +1,13 @@
 import React from 'react';
-import { Volume2, VolumeX, Edit3, Compass, Sparkles } from 'lucide-react';
+import { Volume2, VolumeX, Edit3, Compass, Sparkles, BookOpen } from 'lucide-react';
 import { Grade } from '../../math-engine/types';
 import { StudyBuddyLogo } from '../ui/StudyBuddyLogo';
 
 interface HeaderProps {
-  currentScreen: 'home' | 'setup' | 'practice' | 'results';
+  currentScreen: 'home' | 'setup' | 'practice' | 'results' | 'spellit';
   selectedGrade: Grade | null;
   onNavigateHome: () => void;
+  onNavigateSpellit: () => void;
   soundEnabled: boolean;
   onToggleSound: () => void;
   onToggleScratchpad: () => void;
@@ -18,6 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
   currentScreen,
   selectedGrade,
   onNavigateHome,
+  onNavigateSpellit,
   soundEnabled,
   onToggleSound,
   onToggleScratchpad,
@@ -38,8 +40,22 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Action Controls */}
         <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            onClick={onNavigateSpellit}
+            aria-current={currentScreen === 'spellit' ? 'page' : undefined}
+            className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+              currentScreen === 'spellit'
+                ? 'bg-indigo-600 text-white'
+                : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100'
+            }`}
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>Spellit</span>
+          </button>
+
           {/* Active Grade Pill */}
-          {selectedGrade && currentScreen !== 'home' && (
+          {selectedGrade && currentScreen !== 'home' && currentScreen !== 'spellit' && (
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-indigo-50 border border-indigo-100 rounded-full text-indigo-700 font-bold text-xs">
               <Compass className="w-3.5 h-3.5" />
               <span>Grade {selectedGrade}</span>
