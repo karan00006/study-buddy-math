@@ -79,6 +79,15 @@ function withStorageLock<T>(operation: () => T): Promise<T> {
   return Promise.resolve(operation());
 }
 
+function shuffle<T>(items: T[]): T[] {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const otherIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[otherIndex]] = [shuffled[otherIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
 export function getOrAssignDailyWords(date = new Date()): Promise<DailySpellitWords> {
   return withStorageLock(() => {
     const state = readState();
@@ -87,7 +96,7 @@ export function getOrAssignDailyWords(date = new Date()): Promise<DailySpellitWo
 
     if (!assignedIds) {
       const displayed = new Set(state.displayedWordIds);
-      const nextWords = SPELLIT_WORDS.filter(({ id }) => !displayed.has(id)).slice(0, 2);
+      const nextWords = shuffle(SPELLIT_WORDS.filter(({ id }) => !displayed.has(id))).slice(0, 2);
 
       if (nextWords.length === 2) {
         assignedIds = nextWords.map(({ id }) => id);

@@ -1,3 +1,6 @@
+import { SPELLIT_ADDITIONAL_WORDS } from './spellitAdditionalWords';
+import { SPELLIT_EXTRA_WORDS } from './spellitExtraWords';
+
 export interface SpellitWord {
   id: string;
   word: string;
@@ -7,7 +10,7 @@ export interface SpellitWord {
   antonyms?: string[];
 }
 
-export const SPELLIT_WORDS: SpellitWord[] = [
+const CORE_SPELLIT_WORDS: SpellitWord[] = [
   { id: 'abundant', word: 'Abundant', meaning: 'Existing in large quantities; plentiful.', meaningUrdu: 'وافر، بکثرت', synonyms: ['plentiful', 'ample'], antonyms: ['scarce'] },
   { id: 'admire', word: 'Admire', meaning: 'To regard someone or something with respect or approval.', meaningUrdu: 'تعریف کرنا، سراہنا', synonyms: ['respect', 'appreciate'], antonyms: ['disapprove'] },
   { id: 'ancient', word: 'Ancient', meaning: 'Belonging to the very distant past.', meaningUrdu: 'قدیم، پرانا', synonyms: ['old', 'antique'], antonyms: ['modern'] },
@@ -63,4 +66,10 @@ export const SPELLIT_WORDS: SpellitWord[] = [
   { id: 'witness', word: 'Witness', meaning: 'To see an event happen; a person who sees it happen.', meaningUrdu: 'گواہ ہونا، عینی شاہد', synonyms: ['observe', 'see'], antonyms: [] },
   { id: 'worthwhile', word: 'Worthwhile', meaning: 'Worth the time, effort, or money spent.', meaningUrdu: 'قابلِ قدر، فائدہ مند', synonyms: ['valuable', 'beneficial'], antonyms: ['pointless'] },
   { id: 'yield', word: 'Yield', meaning: 'To give way or produce a result or crop.', meaningUrdu: 'راستہ دینا، پیداوار دینا', synonyms: ['surrender', 'produce'], antonyms: ['resist'] },
+];
+
+export const SPELLIT_WORDS: SpellitWord[] = [
+  ...CORE_SPELLIT_WORDS,
+  ...SPELLIT_ADDITIONAL_WORDS,
+  ...SPELLIT_EXTRA_WORDS,
 ];

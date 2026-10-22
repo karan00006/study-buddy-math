@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SPELLIT_WORDS } from '../../data/spellitWords';
 import {
   addRememberedWord,
@@ -20,7 +20,26 @@ beforeEach(() => {
   });
 });
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 describe('Spellit storage', () => {
+  it('contains approximately 400 unique vocabulary words', () => {
+    const ids = SPELLIT_WORDS.map(({ id }) => id);
+    expect(ids).toHaveLength(399);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('shuffles the unused words before choosing the daily pair', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.5);
+
+    const { words } = await getOrAssignDailyWords(new Date(2026, 0, 3, 12));
+
+    expect(Math.random).toHaveBeenCalled();
+    expect(words.map(({ id }) => id)).not.toEqual(SPELLIT_WORDS.slice(0, 2).map(({ id }) => id));
+  });
+
   it('assigns exactly two words once per day and does not repeat them on later days', async () => {
     const firstDay = await getOrAssignDailyWords(new Date(2026, 0, 1, 12));
     const sameDay = await getOrAssignDailyWords(new Date(2026, 0, 1, 12));
